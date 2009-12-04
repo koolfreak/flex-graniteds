@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	horizontalAlign="center" verticalAlign="middle"
+	creationComplete="init()">
+	
+	<mx:Metadata>
+		[Name("albumUI")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.collections.ListCollectionView;
+			import mx.events.ListEvent;
+			
+			import org.granite.tide.events.TideUIEvent;
+			import org.graniteds.tide.event.RemoteExceptionEvent;
+			import org.graniteds.tide.model.Album;
+			import org.graniteds.tide.model.Track;
+			
+			[Bindable][In]
+			public var albums:ArrayCollection;
+			[Bindable]
+			private var tracks:ListCollectionView
+			
+			
+			public function init():void {
+			//	this.remoteExceptionBtn.addEventListener(MouseEvent.CLICK,onRemoteExceptionClick);
+				//this.showArtistsBtn.addEventListener(MouseEvent.CLICK,onShowArtistsClick);			
+			}
+	        
+	        public function onRemoteExceptionClick(e:MouseEvent):void {
+				dispatchEvent(new RemoteExceptionEvent());
+			}
+			
+			public function onShowArtistsClick(e:MouseEvent):void {
+				dispatchEvent(new TideUIEvent('showArtists'));
+			}
+		
+			protected function albumList_itemClickHandler(event:ListEvent):void
+			{
+				var _album:Album = albumList.selectedItem as Album;
+				tracks = _album.albumTracks;
+			}
+
+		]]>
+	</mx:Script>
+	
+		<mx:Panel title="Albums">
+			
+			
+			<mx:DataGrid id="albumList" name="Albums" dataProvider="{albums}" itemClick="albumList_itemClickHandler(event)">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Name" dataField="name"/>
+					<mx:DataGridColumn headerText="Year" dataField="year"/>
+					<mx:DataGridColumn headerText="# Tracks"/>
+					<mx:DataGridColumn headerText="Duration"/>
+				</mx:columns>
+			</mx:DataGrid>
+			
+		</mx:Panel>
+	
+		<mx:Panel title="Album Tracks">
+			
+			<mx:DataGrid dataProvider="{tracks}">
+					<mx:columns>
+						<mx:DataGridColumn dataField="title" headerText="Title"/>
+					</mx:columns>
+			</mx:DataGrid>
+			
+		</mx:Panel>	
+		
+</mx:VBox>

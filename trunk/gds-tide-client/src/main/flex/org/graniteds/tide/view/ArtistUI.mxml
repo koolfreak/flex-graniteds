@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="init()">
+	
+	<mx:Metadata>
+		[Name("artistUI")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.granite.tide.events.TideUIEvent;
+			//import org.granite.tide.test.client.event.SaveArtistEvent;
+			import org.graniteds.tide.controller.ArtistController;
+			import org.graniteds.tide.event.LoggedInEvent;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable][In]
+			public var artists:ArrayCollection;
+			
+			[Bindable]
+      		public var transferMessage:String = null;
+			
+			public function init():void {
+				this.saveArtistBtn.addEventListener(MouseEvent.CLICK, onBtn1Click);
+				this.addArtistBtn.addEventListener(MouseEvent.CLICK, onBtn2Click);
+			}
+	        
+	        public function onBtn1Click(e:MouseEvent):void {
+	        	var validatorErrorArray:Array = Validator.validateAll([EditArtistNameVal]);
+	        	if(validatorErrorArray.length == 0)
+				{
+					dispatchEvent(new TideUIEvent('saveArtist', artistsList.selectedItem, EditArtistName.text));
+				}
+				/*else
+				{					
+					transferMessage = "The edited field is empty !";
+				}*/
+			}
+			
+			private function invalidEditArtist(event:Event):void
+			{
+				transferMessage = "The edited field is empty !";
+			}
+			
+			public function onBtn2Click(e:MouseEvent):void {
+				var validatorErrorArray:Array = Validator.validateAll([AddArtistNameVal]);
+				if(validatorErrorArray.length == 0)
+				{
+					transferMessage = "";
+					dispatchEvent(new TideUIEvent('addArtist', AddArtistName.text));
+				}
+				else
+				{
+					transferMessage = "The field is empty !";			
+				}
+			}			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="artistModel">
+		<site>
+	    	<EditArtistNameValidator>{EditArtistName.text}</EditArtistNameValidator>
+	        <AddArtistNameValidator>{AddArtistName.text}</AddArtistNameValidator>
+	    </site>
+	</mx:Model>
+	
+	<mx:Validator id="EditArtistNameVal" required="true" listener="{EditArtistName}"
+		source="{artistModel}" property="EditArtistNameValidator"
+		invalid="invalidEditArtist(event)" />
+	<mx:Validator id="AddArtistNameVal" required="true" source="{artistModel}" property="AddArtistNameValidator" listener="{AddArtistName}"/> 
+	
+	<mx:Panel label="Home" width="100%" height="100%">
+		<mx:Label text="Artists list :"/>
+		<mx:HBox width="100%">
+			<mx:List id="artistsList" labelField="name" dataProvider="{artists}"></mx:List>
+			
+			<mx:VBox width="100%">
+				<mx:Form width="100%">
+			        <mx:FormItem label="Name :" color="#000000" fontSize="12" fontFamily="Arial" required="true">
+			            	<mx:TextInput id="EditArtistName" text="{artistsList.selectedItem.name}" width="100"/>
+			        </mx:FormItem>
+			        <mx:FormItem height="100%">
+						<mx:Canvas bottom="0" height="100%">
+							<mx:Button id="saveArtistBtn" label="Save artist"/>
+						</mx:Canvas>
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form width="100%">
+					<mx:FormItem label="Name :" color="#000000" fontSize="12" fontFamily="Arial" required="true">
+			            	<mx:TextInput id="AddArtistName" text="" width="100"/>
+			        </mx:FormItem>
+			        <mx:FormItem height="22" width="157">
+						<mx:Canvas bottom="0" height="100%">
+							<mx:Button id="addArtistBtn" label="Add artist"/>
+						</mx:Canvas>
+					</mx:FormItem>
+			        <mx:Text text="{transferMessage}" width="100%" styleName="errorMessage"/>
+				</mx:Form>
+			</mx:VBox>
+		</mx:HBox>
+		<mx:Button label="Show Albums" click="dispatchEvent(new LoggedInEvent())"/>
+	</mx:Panel>
+</mx:HBox>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE granite-config PUBLIC "-//Granite Data Services//DTD granite-config internal//EN"
+    "http://www.graniteds.org/public/dtd/2.0.0/granite-config.dtd">
+
+<granite-config scan="true" >
+
+	<security
+		type="org.granite.messaging.service.security.SpringSecurityService" />
+
+	<tide-components>
+		<tide-component instance-of="org.granite.tide.spring.security.Identity" />
+		<tide-component annotated-with="org.springframework.stereotype.Service" />
+	</tide-components>
+	
+	
+	
+	
+</granite-config>

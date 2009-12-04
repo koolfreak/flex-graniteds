@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="100%" height="100%"
+	horizontalAlign="center"
+	xmlns:view="org.graniteds.tide.view.*"
+	preinitialize="ApplicationController.preinitialize()" creationComplete="init()" >
+	
+	<mx:Metadata>
+		[Name("mainAppUI")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.granite.tide.events.TideUIEvent;
+			import org.granite.tide.spring.Context;
+			import org.granite.tide.spring.Identity;
+			import org.granite.tide.spring.Spring;
+			import org.graniteds.tide.controller.ApplicationController;
+			
+			public static const LOGIN : Number = 0;
+			public static const ALBUM : Number = 1;
+			public static const ARTIST : Number = 2;
+			
+			[Bindable]
+ 			private var tideContext:Context = Spring.getInstance().getSpringContext();
+			
+			/** The In annotation link identity to the tide context */
+			[Bindable] [In]
+			public var identity:Identity;
+			
+			[Bindable]
+			public var loginMessage:String = "";
+         	
+         	/** Execute during creationComplete event as declared on the top of the file */  
+			public function init():void {
+				ApplicationController.init();
+				
+				tideContext.mainAppUI = this;
+				
+				if (identity.loggedIn) {
+					this.bodyStack.selectedIndex = main.ALBUM;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:DateFormatter id="dateFormatter" formatString="EEEE, MMMM DD, YYYY"/>
+	
+	<mx:Panel title="Cybernetics Music Store" width="800" height="600">
+		
+	
+	<mx:HBox id="welcomeStack">
+		<mx:Image source="@Embed('../resources/images/logo.png')" right="10" bottom="10" id="logo"/>				
+		<mx:Label text="{dateFormatter.format(new Date ())}" selectable="true"/>	
+		<mx:Text id="nameTxt" fontWeight="bold" text="{identity.username}"/>
+	</mx:HBox>
+
+	<mx:HBox top="70" horizontalAlign="center" width="100%">
+		<mx:ViewStack id="bodyStack" resizeToContent="true" >
+			<view:LoginUI id="loginView"/>
+			<view:MainUI id="albumView"/>
+			<!-- view:ArtistUI id="artistView"/ -->
+		</mx:ViewStack>
+	</mx:HBox>
+
+	</mx:Panel>
+	
+</mx:Application>
