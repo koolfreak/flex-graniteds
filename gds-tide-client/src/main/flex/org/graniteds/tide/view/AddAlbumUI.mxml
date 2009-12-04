@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 horizontalAlign="center" paddingTop="10"
+		 creationComplete="init()">
+	
+	<mx:Metadata>
+		[Name("manageAlbumUI")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import org.granite.tide.events.TideUIEvent;
+			import org.graniteds.tide.model.Album;
+			import org.graniteds.tide.model.Track;
+			
+			public var _newAlbum:Album;
+			[Bindable][Out]
+			private var _tracks:ArrayCollection;
+			
+			private function init():void
+			{
+				this.saveAlbum.addEventListener(MouseEvent.CLICK,saveAlbumHandler);
+				
+				_tracks = new ArrayCollection();
+			}
+			
+			private function saveAlbumHandler(e:MouseEvent):void
+			{
+				_newAlbum = new Album();
+				_newAlbum.name = albumName.text;
+				_newAlbum.year = new Number(albumYear.text);
+				dispatchEvent(new TideUIEvent('saveAlbumEvent'));
+			}
+			
+			private function addAlbumTrackHandler(e:MouseEvent):void
+			{
+				var _newTrack:Track = new Track();
+				_newTrack.title = trkName.text;
+				
+				_tracks.addItem(_newTrack);
+			}
+			
+			private function enterTrackState():void
+			{
+				this.addTrack.addEventListener(MouseEvent.CLICK,addAlbumTrackHandler);
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox horizontalAlign="center" backgroundColor="0xFFFFFF"  paddingBottom="5" paddingTop="5"
+			 borderStyle="solid" cornerRadius="4" width="100%">
+		<mx:Button label="Save" id="saveAlbum"/>
+		<mx:Button label="Edit" id="editAlbum"/>
+		<mx:Button label="Delete" id="deleteAlbum"/>
+	</mx:HBox>
+	
+	<mx:Form id="albumForm">
+		<mx:FormHeading label="Album Details"/>
+		<mx:FormItem label="Name:">
+			<mx:TextInput id="albumName" />
+		</mx:FormItem>
+		<mx:FormItem label="Year:">
+			<mx:TextInput id="albumYear" />
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button label="Add Tracks >>" click="this.currentState='AddTracks'"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:states>
+		<mx:State id="trackState" name="AddTracks" enterState="enterTrackState()">
+			
+			<mx:AddChild relativeTo="{albumForm}" position="after">
+				<mx:Form id="tracksForm">
+					<mx:FormHeading label="Track Details"/>
+					<mx:FormItem label="Title:" required="true">
+						<mx:HBox>
+							<mx:TextInput id="trkName"/>
+							<mx:Spacer/>
+							<mx:Button id="addTrack" label="Add >>"/>
+						</mx:HBox>
+					</mx:FormItem>
+				</mx:Form>
+			</mx:AddChild>
+			
+			<mx:AddChild relativeTo="{tracksForm}" position="after">
+				<mx:DataGrid id="tracksDG" dataProvider="{_tracks}" rowCount="3">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Title" dataField="title"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:AddChild>
+			
+		</mx:State>
+	</mx:states>
+	
+</mx:VBox>

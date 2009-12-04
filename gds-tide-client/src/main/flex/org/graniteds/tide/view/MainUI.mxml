@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="750" height="480" 
+		   xmlns:view="org.graniteds.tide.view.*"
+		   creationComplete="init()">
+	
+	<mx:Metadata>
+		[Name("mainUI")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.granite.tide.events.TideUIEvent;
+			import org.granite.tide.spring.Identity;
+			
+			[In]
+			public var identity:Identity;
+			
+			private function init():void
+			{
+				this.addAlbumButton.addEventListener(MouseEvent.CLICK,addAlbumHandler);
+				this.homeButton.addEventListener(MouseEvent.CLICK,homeHandler);
+				this.logoutButton.addEventListener(MouseEvent.CLICK,logoutHandler);
+			}
+			
+			private function addAlbumHandler(event:MouseEvent):void
+			{
+				dispatchEvent(new TideUIEvent('addAlbum'));
+			}
+			
+			private function homeHandler(e:MouseEvent):void
+			{
+				dispatchEvent(new TideUIEvent('backToHome'));
+			}
+			
+			private function logoutHandler(e:MouseEvent):void
+			{
+				dispatchEvent(new TideUIEvent('logOut'));
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Fade id="stackFadeStart" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
+	<mx:Zoom id="stackFadeEnd" captureRollEvents="false" zoomWidthFrom="1.0" 
+			 zoomWidthTo="0.0" zoomHeightFrom="1.0" zoomHeightTo="0.0"/> 
+	
+	<mx:Panel width="100%" height="100%">
+	
+	<mx:HDividedBox width="100%" height="100%" cornerRadius="4">
+		
+		<mx:VBox horizontalAlign="center" paddingTop="10" width="20%" height="100%" color="0x323232" backgroundColor="#ACACAC">
+			<mx:Button label="Add Album" id="addAlbumButton" />
+			<mx:Button label="Home" id="homeButton" width="{addAlbumButton.width}"/>
+			<mx:Button label="LogOut" id="logoutButton" width="{addAlbumButton.width}"/>
+		</mx:VBox>
+		
+		<mx:VBox horizontalAlign="center" paddingTop="10"  width="100%" height="100%" color="0x323232" backgroundColor="#ACACAC" >
+			<mx:ViewStack id="mainUIStack" >
+				<view:AlbumUI id="albumUI" showEffect="{stackFadeStart}" hideEffect="{stackFadeEnd}"/>
+				<view:AddAlbumUI id="addAlbumUI" showEffect="{stackFadeStart}" hideEffect="{stackFadeEnd}"/>
+			</mx:ViewStack>
+		</mx:VBox>
+		
+	</mx:HDividedBox>
+	
+	</mx:Panel>	
+		
+</mx:Canvas>
