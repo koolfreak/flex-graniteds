@@ -31,20 +31,25 @@ public class StartTideGDS
 
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
-		bb.setContextPath("/tide-test-server");
+		bb.setContextPath("/gds-tide-server");
 		bb.setWar("src/main/webapp");
-		
+
 		server.addHandler(bb);
 
-		try {
-			System.out.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");
+		try
+		{
+			System.out
+					.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");
 			server.start();
-			while (System.in.available() == 0) {
+			while (System.in.available() == 0)
+			{
 				Thread.sleep(5000);
 			}
 			server.stop();
 			server.join();
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 			System.exit(100);
 		}
