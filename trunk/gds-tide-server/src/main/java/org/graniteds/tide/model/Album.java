@@ -31,6 +31,8 @@ public class Album implements Serializable
 	@Column(name = "id", length = 32)
 	private String id;
 
+	@Basic
+	@Column
 	private String name;
 
 	@Basic

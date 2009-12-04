@@ -43,6 +43,7 @@
 					1</prop>
 				<prop key="hibernate.c3p0.testConnectionOnCheckout">
 					true</prop>
+				<prop key="hibernate.query.substitutions">true 1, false 0</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.bytecode.use_reflection_optimizer">
 					true</prop>
@@ -62,6 +63,7 @@
 				<value>org.graniteds.tide.model.Album</value>
 				<value>org.graniteds.tide.model.Artist</value>
 				<value>org.graniteds.tide.model.Track</value>
+				<value>org.graniteds.tide.model.User</value>
 			</list>
 		</property>
 		<property name="annotatedPackages">
@@ -100,6 +102,9 @@
 	<!-- ================== DAO CONFIG ========================================= -->
 		
 	<bean id="albumDao" class="org.graniteds.tide.dao.album.AlbumDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="userDao" class="org.graniteds.tide.dao.user.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
