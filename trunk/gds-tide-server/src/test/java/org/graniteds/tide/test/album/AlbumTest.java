@@ -3,6 +3,7 @@
  */
 package org.graniteds.tide.test.album;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.graniteds.tide.model.Album;
@@ -23,29 +24,49 @@ public class AlbumTest extends BaseGraniteDSTest
 
 	@Autowired private AlbumManager albumManager;
 	
-	//@Test
+	@Test
 	public void loadDataAlbumsTest()
 	{
 		Album album = new Album();
 		album.setDuration(new Duration(1, 20, 20));
 		album.setName("RedHotChilliPeppers");
 		album.setYear(1999);
+		
+		Track track = null;
+		List<Track> tracks = new ArrayList<Track>();
+		
+		track = new Track();
+		track.setTitle("1");
+		track.setAlbum(album);
+		tracks.add(track);
+		
+		track = new Track();
+		track.setTitle("2");
+		track.setAlbum(album);
+		tracks.add(track);
+		
+		album.setAlbumTracks(tracks);
 		albumManager.save(album);
-		//albumDao.save(new Album("2", "RageAgainstTheMachine", 1995, new Duration(1, 20, 20)));
-		//albumDao.save(new Album("3", "Blink182", 1999, new Duration(1, 20, 20)));
 	}
 	
-	@Test
+	/*@Test
 	public void getAlbumTracks() 
 	{
-		List<Album> _albums = albumManager.getAllAlbums();
-		for(Album album : _albums)
+		Album album = albumManager.getAlbum("ff808181255df0cc01255df0d1020001");
+		//assertNotNull(album.getAlbumTracks().get(0).getTitle());
+		System.out.println(album.getAlbumTracks().get(0).getTitle());
+		//System.out.println(_tracks.size());
+		for (Track track : _tracks)
 		{
-			List<Track> _tracks = album.getAlbumTracks();
-			for(Track track : _tracks)
-			{
-				System.out.println(track.getTitle());
-			}
+			System.out.println("track title: "+track.getTitle());
 		}
-	}
+		//assertNotNull(_tracks);
+	}*/
+	
+	/*@Test
+	public void deleteAlbumTest()
+	{
+		Album album = albumManager.getAlbum("ff808181255e136801255e141be10001");
+		albumManager.remove(album);
+	}*/
 }
