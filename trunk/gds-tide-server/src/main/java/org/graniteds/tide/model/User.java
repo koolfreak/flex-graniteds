@@ -46,6 +46,10 @@ public class User implements Serializable
 	@Basic
 	@Column
 	private String contactNumber;
+	
+	@Basic
+	@Column
+	private String role;
 
 	@Basic
 	@Column(columnDefinition = "tinyint(1)")
@@ -129,6 +133,16 @@ public class User implements Serializable
 	public void setEnabled(boolean enabled)
 	{
 		this.enabled = enabled;
+	}
+	
+	public String getRole()
+	{
+		return role;
+	}
+
+	public void setRole(String role)
+	{
+		this.role = role;
 	}
 
 	@Override

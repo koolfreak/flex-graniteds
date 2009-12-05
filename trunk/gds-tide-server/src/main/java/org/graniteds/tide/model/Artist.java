@@ -3,12 +3,14 @@ package org.graniteds.tide.model;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -22,17 +24,20 @@ public class Artist implements Serializable
 {
 
 	@Id()
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(name = "id", length = 32)
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@Column(name = "id", length = 32)
 	private String id;
 
 	@Basic
 	@Column
 	private String name;
-	
-	@ManyToOne
+
+	@ManyToOne(targetEntity = Track.class, cascade = CascadeType.ALL)
 	private Track track;
+
+	@Version
+	private int verion;
 
 	public Artist()
 	{
@@ -75,7 +80,17 @@ public class Artist implements Serializable
 	{
 		this.track = track;
 	}
-	
+
+	public int getVerion()
+	{
+		return verion;
+	}
+
+	public void setVerion(int verion)
+	{
+		this.verion = verion;
+	}
+
 	@Override
 	public boolean equals(Object obj)
 	{

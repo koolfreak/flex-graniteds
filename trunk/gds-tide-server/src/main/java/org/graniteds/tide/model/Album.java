@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -42,22 +43,13 @@ public class Album implements Serializable
 	@Embedded
 	private Duration duration;
 
-	@OneToMany(mappedBy = "album",fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	//@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	//@JoinTable(name = "parents_children", joinColumns = @JoinColumn(name = "parent_id"), inverseJoinColumns = @JoinColumn(name = "child_id"))
+	@OneToMany(mappedBy = "album",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private List<Track> albumTracks;
-
-	public Album()
-	{
-		super();
-	}
-
-	public Album(String id, String name, int year, Duration duration)
-	{
-		super();
-		this.id = id;
-		this.name = name;
-		this.year = year;
-		this.duration = duration;
-	}
+	
+	@Version
+	private int version;
 
 	public String getId()
 	{
@@ -107,6 +99,16 @@ public class Album implements Serializable
 	public void setAlbumTracks(List<Track> albumTracks)
 	{
 		this.albumTracks = albumTracks;
+	}
+
+	public int getVersion()
+	{
+		return version;
+	}
+
+	public void setVersion(int version)
+	{
+		this.version = version;
 	}
 
 	@Override
