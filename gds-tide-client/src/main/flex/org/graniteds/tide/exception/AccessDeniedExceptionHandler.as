@@ -12,7 +12,7 @@ package org.graniteds.tide.exception {
         
         
         public function accepts(emsg:ErrorMessage):Boolean {
-            return emsg.faultCode == ACCESS_DENIED;
+			return emsg.faultCode == ACCESS_DENIED;
         }
 		
         public function handle(context:BaseContext, emsg:ErrorMessage):void {

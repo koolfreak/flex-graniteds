@@ -26,6 +26,7 @@ package org.graniteds.tide.model {
         private var _duration:Duration;
         private var _id:String;
         private var _name:String;
+        private var _version:int;
         private var _year:int;
 
         meta function isInitialized(name:String = null):Boolean {
@@ -67,6 +68,13 @@ package org.graniteds.tide.model {
             return _name;
         }
 
+        public function set version(value:int):void {
+            _version = value;
+        }
+        public function get version():int {
+            return _version;
+        }
+
         public function set year(value:int):void {
             _year = value;
         }
@@ -82,6 +90,7 @@ package org.graniteds.tide.model {
                 _duration = input.readObject() as Duration;
                 _id = input.readObject() as String;
                 _name = input.readObject() as String;
+                _version = input.readObject() as int;
                 _year = input.readObject() as int;
             }
             else {
@@ -97,6 +106,7 @@ package org.graniteds.tide.model {
                 output.writeObject(_duration);
                 output.writeObject(_id);
                 output.writeObject(_name);
+                output.writeObject(_version);
                 output.writeObject(_year);
             }
             else {

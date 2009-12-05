@@ -10,35 +10,137 @@ package org.graniteds.tide.model {
     import flash.utils.IDataInput;
     import flash.utils.IDataOutput;
     import flash.utils.IExternalizable;
+    import org.granite.collections.IPersistentCollection;
+    import org.granite.meta;
+
+    use namespace meta;
 
     [Bindable]
     public class UserBase implements IExternalizable {
 
-        private var _login:String;
-        private var _name:String;
+        private var __initialized:Boolean = true;
+        private var __detachedState:String = null;
 
-        public function set login(value:String):void {
-            _login = value;
-        }
-        public function get login():String {
-            return _login;
+        private var _contactNumber:String;
+        private var _email:String;
+        private var _enabled:Boolean;
+        private var _firstName:String;
+        private var _id:Number;
+        private var _lastName:String;
+        private var _password:String;
+        private var _role:String;
+        private var _username:String;
+
+        meta function isInitialized(name:String = null):Boolean {
+            if (!name)
+                return __initialized;
+
+            var property:* = this[name];
+            return (
+                (!(property is User) || (property as User).meta::isInitialized()) &&
+                (!(property is IPersistentCollection) || (property as IPersistentCollection).isInitialized())
+            );
         }
 
-        public function set name(value:String):void {
-            _name = value;
+        public function set contactNumber(value:String):void {
+            _contactNumber = value;
         }
-        public function get name():String {
-            return _name;
+        public function get contactNumber():String {
+            return _contactNumber;
+        }
+
+        public function set email(value:String):void {
+            _email = value;
+        }
+        public function get email():String {
+            return _email;
+        }
+
+        public function set enabled(value:Boolean):void {
+            _enabled = value;
+        }
+        public function get enabled():Boolean {
+            return _enabled;
+        }
+
+        public function set firstName(value:String):void {
+            _firstName = value;
+        }
+        public function get firstName():String {
+            return _firstName;
+        }
+
+        public function set id(value:Number):void {
+            _id = value;
+        }
+        public function get id():Number {
+            return _id;
+        }
+
+        public function set lastName(value:String):void {
+            _lastName = value;
+        }
+        public function get lastName():String {
+            return _lastName;
+        }
+
+        public function set password(value:String):void {
+            _password = value;
+        }
+        public function get password():String {
+            return _password;
+        }
+
+        public function set role(value:String):void {
+            _role = value;
+        }
+        public function get role():String {
+            return _role;
+        }
+
+        public function set username(value:String):void {
+            _username = value;
+        }
+        public function get username():String {
+            return _username;
         }
 
         public function readExternal(input:IDataInput):void {
-            _login = input.readObject() as String;
-            _name = input.readObject() as String;
+            __initialized = input.readObject() as Boolean;
+            __detachedState = input.readObject() as String;
+            if (meta::isInitialized()) {
+                _contactNumber = input.readObject() as String;
+                _email = input.readObject() as String;
+                _enabled = input.readObject() as Boolean;
+                _firstName = input.readObject() as String;
+                _id = function(o:*):Number { return (o is Number ? o as Number : Number.NaN) } (input.readObject());
+                _lastName = input.readObject() as String;
+                _password = input.readObject() as String;
+                _role = input.readObject() as String;
+                _username = input.readObject() as String;
+            }
+            else {
+                _id = function(o:*):Number { return (o is Number ? o as Number : Number.NaN) } (input.readObject());
+            }
         }
 
         public function writeExternal(output:IDataOutput):void {
-            output.writeObject(_login);
-            output.writeObject(_name);
+            output.writeObject(__initialized);
+            output.writeObject(__detachedState);
+            if (meta::isInitialized()) {
+                output.writeObject(_contactNumber);
+                output.writeObject(_email);
+                output.writeObject(_enabled);
+                output.writeObject(_firstName);
+                output.writeObject(_id);
+                output.writeObject(_lastName);
+                output.writeObject(_password);
+                output.writeObject(_role);
+                output.writeObject(_username);
+            }
+            else {
+                output.writeObject(_id);
+            }
         }
     }
 }

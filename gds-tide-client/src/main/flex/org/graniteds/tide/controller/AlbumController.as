@@ -40,25 +40,19 @@ package org.graniteds.tide.controller
             Log.addTarget(t);            
         }
         
-        //--------------------------------------------
+		// Using typed events, see : http://www.graniteds.org/confluence/display/DOC20/6.+Flex+3+Client+Framework
+		[Observer]
+		public function eventHandler(event:LoggedInEvent):void 
+		{
+			albumService.getAllAlbums(getAllAlbumsResult);
+		}
 			
 		public function getAllAlbums():void {
-		  albumService.getAllAlbums(getAllAlbumsResult);
-		}
-		
-		public function getAlbum():void {
-		  albumService.getAlbum(0,getAlbumResult);
+		  	albumService.getAllAlbums(getAllAlbumsResult);
 		}
 		
 		private function getAllAlbumsResult(event:TideResultEvent):void {
-		  trace("getAllAlbumsResult");
 		  albums = event.result as ArrayCollection;
-		}
-		
-		private function getAlbumResult(event:TideResultEvent):void {
-		  trace("getAlbumResult");
-		  album = event.result as Album;
-		  albumUI.albumLabel.text = album.name;
 		}
 		
 		[Observer('saveAlbumEvent')]
@@ -71,8 +65,36 @@ package org.graniteds.tide.controller
 			getAllAlbums();
 			manageAlbumUI.dispatchEvent(new TideUIEvent('backToHome'));
 		}
+		
+		[Observer('editAlbumEvent')]
+		public function editAlbumEvent(album:Album):void
+		{
+			albumService.getTrackAlbum(album.id,editResultHandler);
+		}
+		
+		private function editResultHandler(e:TideResultEvent):void
+		{
+			manageAlbumUI._newAlbum = e.result as Album;
+		}
+		
 		private function saveAlbumFault(event:TideFaultEvent):void {
-		    Alert.show("helloFault: " + event.fault.toString());
+		    Alert.show(event.fault.faultString);
+		}
+		
+		[Observer('deleteAlbumEvent')]
+		public function deleteAlbumEvent(album:Album):void
+		{
+			albumService.remove(album,deleteResult,deleteFault);
+		}
+		
+		private function deleteResult(e:TideResultEvent):void
+		{
+			getAllAlbums();
+		}
+		
+		private function deleteFault(e:TideFaultEvent):void
+		{
+			Alert.show(e.fault.faultString);
 		}
 		
 		private function validationHandler(event:TideValidatorEvent):void {
@@ -85,14 +107,6 @@ package org.graniteds.tide.controller
 		        );
 		    }
 		}
-		
-		// Using typed events, see : http://www.graniteds.org/confluence/display/DOC20/6.+Flex+3+Client+Framework
-		[Observer]
-		public function eventHandler(event:LoggedInEvent):void 
-		{
-		   	getAllAlbums();
-		}
-		
 		
 	}
 					
