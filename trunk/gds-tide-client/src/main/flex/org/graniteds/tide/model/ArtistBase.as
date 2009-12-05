@@ -24,6 +24,7 @@ package org.graniteds.tide.model {
         private var _id:String;
         private var _name:String;
         private var _track:Track;
+        private var _verion:int;
 
         meta function isInitialized(name:String = null):Boolean {
             if (!name)
@@ -57,6 +58,13 @@ package org.graniteds.tide.model {
             return _track;
         }
 
+        public function set verion(value:int):void {
+            _verion = value;
+        }
+        public function get verion():int {
+            return _verion;
+        }
+
         public function readExternal(input:IDataInput):void {
             __initialized = input.readObject() as Boolean;
             __detachedState = input.readObject() as String;
@@ -64,6 +72,7 @@ package org.graniteds.tide.model {
                 _id = input.readObject() as String;
                 _name = input.readObject() as String;
                 _track = input.readObject() as Track;
+                _verion = input.readObject() as int;
             }
             else {
                 _id = input.readObject() as String;
@@ -77,6 +86,7 @@ package org.graniteds.tide.model {
                 output.writeObject(_id);
                 output.writeObject(_name);
                 output.writeObject(_track);
+                output.writeObject(_verion);
             }
             else {
                 output.writeObject(_id);
