@@ -104,6 +104,9 @@
 	<bean id="albumDao" class="org.graniteds.tide.dao.album.AlbumDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="trackDao" class="org.graniteds.tide.dao.track.TrackDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 	<bean id="userDao" class="org.graniteds.tide.dao.user.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
