@@ -8,11 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -39,19 +41,17 @@ public class Track implements Serializable
 	@Column
 	private String title;
 
-	@ManyToOne
+	@ManyToOne(targetEntity=Album.class,cascade=CascadeType.ALL)
 	private Album album;
 
 	@Embedded
 	private Duration duration;
 
-	@OneToMany(mappedBy = "track",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "track",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private List<Artist> trackArtists;
-
-	public Track()
-	{
-		super();
-	}
+	
+	@Version
+	private int version;
 
 	public String getId()
 	{
@@ -111,6 +111,16 @@ public class Track implements Serializable
 	public void setAlbum(Album album)
 	{
 		this.album = album;
+	}
+
+	public int getVersion()
+	{
+		return version;
+	}
+
+	public void setVersion(int version)
+	{
+		this.version = version;
 	}
 
 	@Override
