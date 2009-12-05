@@ -29,7 +29,7 @@
      !-->
 	<factories>
 		<factory id="tideSpringFactory" class="org.granite.tide.spring.SpringServiceFactory">
-			<service-exception-handler>org.granite.tide.test.security.ServiceExceptionHandler</service-exception-handler>
+			<service-exception-handler>org.graniteds.tide.exception.ServiceExceptionHandler</service-exception-handler>
 		</factory>
 	</factories>
 
