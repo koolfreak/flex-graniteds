@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.graniteds.tide.dao.album.AlbumDao;
 import org.graniteds.tide.model.Album;
+import org.graniteds.tide.model.Track;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,14 @@ public class AlbumManagerImpl implements AlbumManager
 	 */
 	public void save(Album album)
 	{
+		if( !album.getAlbumTracks().isEmpty() )
+		{
+			final List<Track> tracks = album.getAlbumTracks();
+			for (Track track : tracks)
+			{
+				track.setAlbum(album);
+			}
+		}
 		albumDao.save(album);
 	}
 	
@@ -46,7 +55,8 @@ public class AlbumManagerImpl implements AlbumManager
 	 */
 	public void remove(Album album)
 	{
-		albumDao.remove(album);
+		final Album _album = getAlbum(album.getId());
+		albumDao.remove(_album);
 	}
 
 
@@ -56,6 +66,14 @@ public class AlbumManagerImpl implements AlbumManager
 	public void update(Album album)
 	{
 		albumDao.update(album);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.graniteds.tide.service.album.AlbumManager#getTrackAlbum(java.lang.String)
+	 */
+	public Album getTrackAlbum(String id)
+	{
+		return albumDao.getTrackAlbum(id);
 	}
 
 
