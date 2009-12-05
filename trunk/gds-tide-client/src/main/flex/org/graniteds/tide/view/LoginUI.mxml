@@ -68,11 +68,11 @@
 	        <mx:Text htmlText="Please enter your login information :" textAlign="center" color="#000000" fontSize="12" width="100%" top="30" fontWeight="bold" fontFamily="Arial"/>
 	        <mx:Text text="{message}" x="158" y="278" width="100%" styleName="errorMessage"/>
 	        <mx:FormItem id="frmItemUsername" label="Login :" color="#000000" fontSize="12" fontFamily="Arial" required="true">
-	            	<mx:TextInput id="username" text="admin"/>
+	            	<mx:TextInput id="username" text="eman"/>
 	        </mx:FormItem>
 
 	        <mx:FormItem id="frmItemPass" label="Password :" color="#000000" fontSize="12" fontFamily="Arial" required="true">
-	            	<mx:TextInput id="password" text="admin" displayAsPassword="true"/>
+	            	<mx:TextInput id="password" text="123456" displayAsPassword="true"/>
 	        </mx:FormItem>
 		
 			<mx:FormItem height="100%">

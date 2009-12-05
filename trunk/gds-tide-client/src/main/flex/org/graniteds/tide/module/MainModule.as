@@ -23,6 +23,7 @@ package org.graniteds.tide.module
         
         public function init(tide:Tide):void {
         	
+			
         	var t:TraceTarget = new TraceTarget();
             t.filters = ["org.granite.*"];
             Log.addTarget(t);

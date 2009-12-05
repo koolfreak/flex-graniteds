@@ -28,6 +28,7 @@ package org.graniteds.tide.model {
         private var _orderNum:int;
         private var _title:String;
         private var _trackArtists:ListCollectionView;
+        private var _version:int;
 
         meta function isInitialized(name:String = null):Boolean {
             if (!name)
@@ -82,6 +83,13 @@ package org.graniteds.tide.model {
             return _trackArtists;
         }
 
+        public function set version(value:int):void {
+            _version = value;
+        }
+        public function get version():int {
+            return _version;
+        }
+
         public function readExternal(input:IDataInput):void {
             __initialized = input.readObject() as Boolean;
             __detachedState = input.readObject() as String;
@@ -92,6 +100,7 @@ package org.graniteds.tide.model {
                 _orderNum = input.readObject() as int;
                 _title = input.readObject() as String;
                 _trackArtists = input.readObject() as ListCollectionView;
+                _version = input.readObject() as int;
             }
             else {
                 _id = input.readObject() as String;
@@ -108,6 +117,7 @@ package org.graniteds.tide.model {
                 output.writeObject(_orderNum);
                 output.writeObject(_title);
                 output.writeObject(_trackArtists);
+                output.writeObject(_version);
             }
             else {
                 output.writeObject(_id);

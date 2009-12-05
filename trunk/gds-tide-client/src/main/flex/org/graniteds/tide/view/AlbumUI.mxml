@@ -16,7 +16,6 @@
 			import org.granite.tide.events.TideUIEvent;
 			import org.graniteds.tide.event.RemoteExceptionEvent;
 			import org.graniteds.tide.model.Album;
-			import org.graniteds.tide.model.Track;
 			
 			[Bindable][In]
 			public var albums:ArrayCollection;
@@ -25,30 +24,44 @@
 			
 			
 			public function init():void {
-			//	this.remoteExceptionBtn.addEventListener(MouseEvent.CLICK,onRemoteExceptionClick);
-				//this.showArtistsBtn.addEventListener(MouseEvent.CLICK,onShowArtistsClick);			
+				this.editButton.addEventListener(MouseEvent.CLICK, editHandler);
+				this.deleteButton.addEventListener(MouseEvent.CLICK,deleteHandler);			
 			}
 	        
 	        public function onRemoteExceptionClick(e:MouseEvent):void {
 				dispatchEvent(new RemoteExceptionEvent());
 			}
 			
-			public function onShowArtistsClick(e:MouseEvent):void {
-				dispatchEvent(new TideUIEvent('showArtists'));
-			}
-		
 			protected function albumList_itemClickHandler(event:ListEvent):void
 			{
 				var _album:Album = albumList.selectedItem as Album;
 				tracks = _album.albumTracks;
 			}
-
+			
+			private function deleteHandler(e:MouseEvent):void
+			{
+				if(albumList.selectedItem != null)
+				{
+					dispatchEvent(new TideUIEvent('deleteAlbumEvent',albumList.selectedItem as Album));
+				}
+			}
+			
+			private function editHandler(e:MouseEvent):void
+			{
+				if(albumList.selectedItem != null)
+				{
+					dispatchEvent(new TideUIEvent('editAlbum',albumList.selectedItem as Album));
+				}
+			}
 		]]>
 	</mx:Script>
+		
+		<mx:ControlBar id="buttons">
+			<mx:Button label="Edit" id="editButton"/>
+			<mx:Button label="Delete" id="deleteButton"/>
+		</mx:ControlBar>
 	
 		<mx:Panel title="Albums">
-			
-			
 			<mx:DataGrid id="albumList" name="Albums" dataProvider="{albums}" itemClick="albumList_itemClickHandler(event)">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Name" dataField="name"/>
@@ -57,17 +70,6 @@
 					<mx:DataGridColumn headerText="Duration"/>
 				</mx:columns>
 			</mx:DataGrid>
-			
 		</mx:Panel>
 	
-		<mx:Panel title="Album Tracks">
-			
-			<mx:DataGrid dataProvider="{tracks}">
-					<mx:columns>
-						<mx:DataGridColumn dataField="title" headerText="Title"/>
-					</mx:columns>
-			</mx:DataGrid>
-			
-		</mx:Panel>	
-		
 </mx:VBox>
