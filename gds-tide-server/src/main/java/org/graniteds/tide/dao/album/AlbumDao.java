@@ -23,6 +23,8 @@ public interface AlbumDao
 	void remove(Album album) throws DataAccessException;
 
 	Album getAlbum(String id) throws DataAccessException;
+	
+	Album getTrackAlbum(String id) throws DataAccessException;
 
 	List<Album> loadAll() throws DataAccessException;
 }
