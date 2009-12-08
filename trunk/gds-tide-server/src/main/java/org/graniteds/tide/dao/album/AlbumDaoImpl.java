@@ -6,6 +6,8 @@ package org.graniteds.tide.dao.album;
 import java.util.List;
 
 import org.graniteds.tide.model.Album;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -56,6 +58,15 @@ public class AlbumDaoImpl extends HibernateDaoSupport implements AlbumDao
 	public void update(Album album) throws DataAccessException
 	{
 		getHibernateTemplate().merge(album);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.graniteds.tide.dao.album.AlbumDao#getTrackAlbum(java.lang.String)
+	 */
+	public Album getTrackAlbum(String id) throws DataAccessException
+	{
+		return (Album) this.getSession().createCriteria(Album.class).add(Restrictions.eq("id", id))
+		.setFetchMode("albumTracks", FetchMode.JOIN).uniqueResult();
 	}
 
 }
