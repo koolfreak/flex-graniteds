@@ -1,0 +1,1 @@
+A quickstart application for GraniteDS remoting,Tide framework, Spring and Hibernate integration. This project was inspired by <a href='http://code.google.com/p/graniteds-samples/'>graniteds-samples</a>.
